@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: api-app-deployement
+ labels:
+  type: node-api-app
+spec:
+ template:
+  metadata:
+   name: api-application
+   labels:
+    type: node-api-app
+  spec:
+   containers:
+    - name: app-container
+      image: krishnansai/smt-website:latest
+      resources:
+        limits:
+          cpu: "1"
+          memory: "1Gi"
+        requests:
+          cpu: "1"
+          memory: "500Mi"
+      ports:
+        - containerPort: 8001      
+ replicas: 1
+ selector:
+  matchLabels:
+   type: node-api-app
+
+ strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
